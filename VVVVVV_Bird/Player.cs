@@ -47,7 +47,7 @@ namespace VVVVVV_Bird
             this.velocity *= 0.95f;
 
             //always move to right, until change of level direction
-            velocity.X += speed.X/1f;
+            velocity.X += speed.X;
 
             if (Input.IsKeyPressed(Keys.Down))
                 lastPressedKey = Keys.Down;
@@ -59,7 +59,7 @@ namespace VVVVVV_Bird
             if (lastPressedKey == Keys.Up)
                 velocity.Y += -speed.Y;
 
-            if (speedBoosts > 0)
+            if (speedBoosts > 0)//speedboosts
             {
                 if ((lastPressedKey == Keys.Down) && (Input.IsKeyPressed(Keys.Space)))
                 {
@@ -163,6 +163,7 @@ namespace VVVVVV_Bird
             }
         }
 
+        public float MaxXSpeed { get { return maxSpeed.X; } set { maxSpeed.X = value; } }
 
         public int SpeedBoosts { get { return speedBoosts; ;} set { speedBoosts = value; ;} }
 

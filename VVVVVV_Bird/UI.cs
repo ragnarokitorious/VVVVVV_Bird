@@ -27,7 +27,7 @@ namespace VVVVVV_Bird
         public void Draw(SpriteBatch spriteBatch)
         {
             if (visible)
-                spriteBatch.DrawString(font, label + number, position, Color.White,0f,new Vector2(),2f,SpriteEffects.None,0f);
+                spriteBatch.DrawString(font, label + number, position, Color.White,0f,new Vector2(),1.5f,SpriteEffects.None,0f);
         }
 
         public int GetNumber()

@@ -107,6 +107,9 @@
     <Content Include="Content\Font.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\SPEEDBOOSTS.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\WALL.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

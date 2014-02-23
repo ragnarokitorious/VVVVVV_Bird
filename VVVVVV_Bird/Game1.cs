@@ -24,9 +24,8 @@ namespace VVVVVV_Bird
         private Background background;
         private Player player;
         private Level level;
-        private Texture2D fontTexture;
+        private Texture2D fontTexture, spBoostSprite,wallSprite;
         private SpriteFont font;
-        Texture2D wallSprite;
         private int columnSeperation, firstColumnStartPosition, worldLowerBound, worldUpperBound;
         private UI playerScore;
         private UI playerHiScore;
@@ -78,6 +77,7 @@ namespace VVVVVV_Bird
             background = new Background(Content.Load<Texture2D>("BGTile.png"), new Vector2(worldBounds.Width, worldBounds.Height));
 
             Texture2D playerSprite = Content.Load<Texture2D>("PLAYER.png");
+            spBoostSprite = Content.Load<Texture2D>("SPEEDBOOSTS.png");
             wallSprite = Content.Load<Texture2D>("WALL.png");
             fontTexture = Content.Load<Texture2D>("Font.png");
             font = Content.Load<SpriteFont>("HellaFont");
@@ -88,7 +88,7 @@ namespace VVVVVV_Bird
             columnSeperation = 500;
             firstColumnStartPosition = 1000;
 
-            player = new Player(playerSprite, new Vector2(0, 360), new Vector2(1,0.4f), new Vector2(10,10),columnSeperation,3);
+            player = new Player(playerSprite, new Vector2(0, 360), new Vector2(1, 0.4f), new Vector2(10, 10), columnSeperation, 3);
 
             level = new Level(wallSprite);
             level.GenerateWorldBounds(worldLowerBound, worldUpperBound, 50);//generate the worlds lower and upper walls which the pipes are attached to
@@ -132,6 +132,7 @@ namespace VVVVVV_Bird
 
             player.IsDead = false;
             player.SpeedBoosts = 3;
+            player.MaxXSpeed = 10;
 
             if (playerHiScore.GetNumber() < pScore)
                 playerHiScore.SetNumber(pScore);
@@ -164,7 +165,7 @@ namespace VVVVVV_Bird
             Camera2D.UpdatePosition(new Vector2(player.Position.X, 0),cameraOffset);//move camera w/pos of player
             level.MoveWorldBounds(Camera2D.CameraPosition,cameraOffset);
 
-            playerScore.SetPosition(new Vector2(30,0)+Camera2D.CameraPosition-cameraOffset);
+            playerScore.SetPosition(new Vector2(30,0)+Camera2D.CameraPosition-cameraOffset);//move scores w/camera
             playerHiScore.SetPosition(new Vector2(1000, 0) + Camera2D.CameraPosition - cameraOffset);
 
             player.Update(gameTime, columnSeperation, firstColumnStartPosition);
@@ -181,6 +182,12 @@ namespace VVVVVV_Bird
                     level.Columns[i].ReGenerateColumn(level.Columns[i].ColumnXPosition + columnSeperation * 3,worldLowerBound,worldUpperBound);
                     foreach (Wall wall in level.Columns[i].ColumnComponents) { collisionResolver.Add(wall); }//readd after position change
                 }
+            }
+
+            if ((player.Score % 5 == 0)&&(player.Score != 0))
+            {
+                player.MaxXSpeed += 0.08f;
+                Console.WriteLine(player.MaxXSpeed);
             }
 
             collisionResolver.Resolve();
@@ -206,6 +213,12 @@ namespace VVVVVV_Bird
 
             playerScore.Draw(spriteBatch);
             playerHiScore.Draw(spriteBatch);
+
+            for (int i = 0; i < player.SpeedBoosts; i++)//draw speed boosts
+            {
+                spriteBatch.Draw(spBoostSprite, new Vector2(50 * (i + 1), 675) + Camera2D.CameraPosition - cameraOffset, null, Color.White, 0.0f, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0.0f);
+            }
+
             spriteBatch.End();
 
             base.Draw(gameTime);

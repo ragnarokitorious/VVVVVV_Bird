@@ -91,14 +91,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="VVVVVV_Bird.exe" size="57344">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="VVVVVV_Bird.exe" size="57856">
       <assemblyIdentity name="VVVVVV_Bird" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>DBzBCEFimhnmfi/PEeMGhQoATVY=</dsig:DigestValue>
+        <dsig:DigestValue>3/ipXkULs/ovo25+66ocVIdyGo0=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -136,6 +136,15 @@
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
       <dsig:DigestValue>q0Kfl1KWPEMx7id9PfSq4oZd/r0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Content\SPEEDBOOSTS.png" size="9757">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>4ceMZSq5CuMq1T9NLlmlE9k2tLg=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Content\WALL.png" size="1633">
