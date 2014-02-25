@@ -12,16 +12,16 @@ namespace VVVVVV_Bird
         private List<Wall> columnComponents;
         Texture2D wallSprite;
         Vector2 position;
-        Random rnd;
+        public static Random rnd;
         private Vector2 playerDimensions;
         
-        public Column(Texture2D wallSprite,Vector2 playerDimensions,int XPosition,int lowerBound,int upperBound,Random rnd)
+        public Column(Texture2D wallSprite,Vector2 playerDimensions,int XPosition,int lowerBound,int upperBound,Random rand)
         {
             this.wallSprite = wallSprite;
             this.columnComponents = new List<Wall>();
             this.playerDimensions = playerDimensions;
             this.position.X = XPosition;
-            this.rnd = rnd;
+            rnd = rand;
             GenerateColumn(lowerBound, upperBound);//these 2 vars are to define bounds to create columns in
         }
 

@@ -23,7 +23,6 @@ C:\Users\Michael\Desktop\ST_FlappyBird\VVVVVV_Bird\bin\WindowsGL\Debug\SDL.dll
 C:\Users\Michael\Desktop\ST_FlappyBird\VVVVVV_Bird\bin\WindowsGL\Debug\Content\BGTILE.png
 C:\Users\Michael\Desktop\ST_FlappyBird\VVVVVV_Bird\bin\WindowsGL\Debug\Content\Font.png
 C:\Users\Michael\Desktop\ST_FlappyBird\VVVVVV_Bird\bin\WindowsGL\Debug\Content\WALL.png
-C:\Users\Michael\Desktop\ST_FlappyBird\VVVVVV_Bird\bin\WindowsGL\Debug\Content\PLAYER.png
 C:\Users\Michael\Desktop\ST_FlappyBird\VVVVVV_Bird\bin\WindowsGL\Debug\Content\HellaFont.xnb
 C:\Users\Michael\Desktop\ST_FlappyBird\VVVVVV_Bird\bin\WindowsGL\Debug\VVVVVV_Bird.exe.manifest
 C:\Users\Michael\Desktop\ST_FlappyBird\VVVVVV_Bird\bin\WindowsGL\Debug\VVVVVV_Bird.application
@@ -33,7 +32,14 @@ C:\Users\Michael\Desktop\ST_FlappyBird\VVVVVV_Bird\bin\WindowsGL\Debug\Lidgren.N
 C:\Users\Michael\Desktop\ST_FlappyBird\VVVVVV_Bird\bin\WindowsGL\Debug\MonoGame.Framework.dll
 C:\Users\Michael\Desktop\ST_FlappyBird\VVVVVV_Bird\bin\WindowsGL\Debug\OpenTK.dll
 C:\Users\Michael\Desktop\ST_FlappyBird\VVVVVV_Bird\bin\WindowsGL\Debug\Tao.Sdl.dll
-C:\Users\Michael\Desktop\ST_FlappyBird\VVVVVV_Bird\obj\x86\Debug\VVVVVV_Bird.csprojResolveAssemblyReference.cache
 C:\Users\Michael\Desktop\ST_FlappyBird\VVVVVV_Bird\obj\x86\Debug\VVVVVV_Bird.exe.manifest
 C:\Users\Michael\Desktop\ST_FlappyBird\VVVVVV_Bird\obj\x86\Debug\VVVVVV_Bird.application
 C:\Users\Michael\Desktop\ST_FlappyBird\VVVVVV_Bird\bin\WindowsGL\Debug\Content\SPEEDBOOSTS.png
+C:\Users\Michael\Desktop\ST_FlappyBird\VVVVVV_Bird\bin\WindowsGL\Debug\Content\LASER.png
+C:\Users\Michael\Desktop\ST_FlappyBird\VVVVVV_Bird\bin\WindowsGL\Debug\Content\WALL2.png
+C:\Users\Michael\Desktop\ST_FlappyBird\VVVVVV_Bird\bin\WindowsGL\Debug\Content\PLAYER_DOWN.png
+C:\Users\Michael\Desktop\ST_FlappyBird\VVVVVV_Bird\bin\WindowsGL\Debug\Content\PLAYER_NORMAL.png
+C:\Users\Michael\Desktop\ST_FlappyBird\VVVVVV_Bird\bin\WindowsGL\Debug\Content\PLAYER_UP.png
+C:\Users\Michael\Desktop\ST_FlappyBird\VVVVVV_Bird\bin\WindowsGL\Debug\Content\PLAYER.png
+C:\Users\Michael\Desktop\ST_FlappyBird\VVVVVV_Bird\bin\WindowsGL\Debug\Content\PASTCOLUMN.wav
+C:\Users\Michael\Desktop\ST_FlappyBird\VVVVVV_Bird\obj\x86\Debug\VVVVVV_Bird.csprojResolveAssemblyReference.cache

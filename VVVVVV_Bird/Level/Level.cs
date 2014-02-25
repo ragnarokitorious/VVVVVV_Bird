@@ -9,16 +9,18 @@ namespace VVVVVV_Bird
 {
     class Level
     {
-        private List<Wall> walls;
+        private List<Wall> upperwall, lowerwall;
         private List<Column> columns;
-        private Texture2D wallSprite;
+        private Texture2D wallSprite, columnSprite;
         int lowerBound, upperBound;
         Random rnd;
 
-        public Level(Texture2D wallSprite)
+        public Level(Texture2D wallSprite,Texture2D columnSprite)
         {
             this.wallSprite = wallSprite;
-            walls = new List<Wall>();
+            this.columnSprite = columnSprite;
+            lowerwall = new List<Wall>();
+            upperwall = new List<Wall>();
             columns = new List<Column>();
             rnd = new Random();
         }
@@ -31,17 +33,25 @@ namespace VVVVVV_Bird
 
             for (int i = 0; i < generateNumber; i++)
             {
-                walls.Add(new Wall(wallSprite, new Vector2(i * wallSprite.Width,upperBound)));//creates lower bound walls
-                walls.Add(new Wall(wallSprite, new Vector2(i * wallSprite.Width, lowerBound)));//creates upper bound walls
+                lowerwall.Add(new Wall(wallSprite, new Vector2(i * wallSprite.Width,upperBound)));//creates lower bound walls
+            }
+            for (int i = 0; i < generateNumber; i++)
+            {
+                upperwall.Add(new Wall(wallSprite, new Vector2(i * wallSprite.Width, lowerBound)));//creates upper bound walls
             }
         }
 
         public void MoveWorldBounds(Vector2 position,Vector2 offset)
         {
-            for (int i = 0; i < walls.Count; i++)
+            for (int i = 0; i < lowerwall.Count; i++)//walls
             {
-                walls[i].Position = new Vector2(position.X + (i * wallSprite.Width / 2) - offset.X, walls[i].Position.Y);
-                walls[i].UpdateWall();//update collision box for moving upper and lower bounds
+                lowerwall[i].Position = new Vector2((32 * i), lowerwall[i].Position.Y) + Camera2D.CameraPosition - offset;
+                lowerwall[i].UpdateWall();//update collision box for moving upper and lower bounds            
+            }
+            for (int i = 0; i < upperwall.Count; i++)//walls
+            {
+                upperwall[i].Position = new Vector2((32 * i), upperwall[i].Position.Y) + Camera2D.CameraPosition - offset;
+                upperwall[i].UpdateWall();//update collision box for moving upper and lower bounds            
             }
         }
 
@@ -50,7 +60,7 @@ namespace VVVVVV_Bird
         {
             for (int columnXPosition = firstColumnStartPosition; columnXPosition < generateNumber * seperation + firstColumnStartPosition; columnXPosition += seperation)
             {
-                columns.Add(new Column(wallSprite,playerDimensions,columnXPosition,lowerBound,upperBound,rnd));
+                columns.Add(new Column(columnSprite,playerDimensions,columnXPosition,lowerBound,upperBound,rnd));
             }
 
         }
@@ -61,14 +71,18 @@ namespace VVVVVV_Bird
             {
                 column.Draw(spriteBatch);
             }
-            foreach (Wall wall in walls)//walls
+            for (int i = 0; i < upperwall.Count; i++)//walls
             {
-                spriteBatch.Draw(wallSprite, wall.Position, null, Color.White, 0.0f, wall.Origin, 1.0f, SpriteEffects.None, 0.0f);
+                spriteBatch.Draw(wallSprite, upperwall[i].Position, null, Color.White, 0.0f, upperwall[i].Origin, 1.0f, SpriteEffects.None, 0.0f);//lower wall
             }
-
+            for (int i = 0; i < lowerwall.Count; i++)//walls
+            {
+                spriteBatch.Draw(wallSprite, lowerwall[i].Position, null, Color.White, 0.0f, lowerwall[i].Origin, 1.0f, SpriteEffects.FlipVertically, 0.0f);//upper wall
+            }
         }
 
-        public List<Wall> Walls { get { return this.walls; } }
+        public List<Wall> LowerWalls { get { return this.lowerwall; } }
+        public List<Wall> UpperWalls { get { return this.upperwall; } }
         public List<Column> Columns { get { return this.columns; } }
     }
 }

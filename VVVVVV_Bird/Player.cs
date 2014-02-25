@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,24 +13,28 @@ namespace VVVVVV_Bird
     {
         private Vector2 startPosition;
         private Vector2 position, origin, velocity;
+        private Vector3 color;
         Vector2 speed, maxSpeed;
-        private Texture2D playerSprite;
+        private Texture2D playerNormalSprite, playerUpSprite, playerDownSprite,currentSprite;
         private Rectangle collRect;
         private Keys lastPressedKey;
         private int playerScore;
         private bool isDead;
         private int columnSeperation, speedBoosts;
 
-        public Player(Texture2D playerSprite, Vector2 position, Vector2 speed, Vector2 maxSpeed, int columnSeperation, int speedBoosts)
+        public Player(Texture2D playerNormalSprite,Texture2D playerUpSprite,Texture2D playerDownSprite, Vector2 position, Vector2 speed, Vector2 maxSpeed, int columnSeperation, int speedBoosts)
         {
             this.startPosition = position;
-
-            this.playerSprite = playerSprite;
+            this.color = new Vector3(1, 1, 1);
+            this.playerNormalSprite = playerNormalSprite;
+            this.playerUpSprite = playerUpSprite;
+            this.playerDownSprite = playerDownSprite;
+            this.currentSprite = playerNormalSprite;
             this.position=position;
             this.speed = speed;
             this.maxSpeed = maxSpeed;
-            this.origin = new Vector2(playerSprite.Width / 2, playerSprite.Height / 2);
-            this.collRect = AddBoundingBox(position, origin, playerSprite.Width, playerSprite.Height);
+            this.origin = new Vector2(playerNormalSprite.Width / 2, playerNormalSprite.Height / 2);
+            this.collRect = AddBoundingBox(position, origin, playerNormalSprite.Width, playerNormalSprite.Height);
             this.speedBoosts = speedBoosts;
 
             this.columnSeperation = columnSeperation;
@@ -55,9 +60,15 @@ namespace VVVVVV_Bird
                 lastPressedKey = Keys.Up;
 
             if (lastPressedKey == Keys.Down)
+            {
                 velocity.Y += speed.Y;
+              //  currentSprite = playerDownSprite;
+            }
             if (lastPressedKey == Keys.Up)
+            {
                 velocity.Y += -speed.Y;
+               // currentSprite = playerUpSprite;
+            }
 
             if (speedBoosts > 0)//speedboosts
             {
@@ -65,17 +76,25 @@ namespace VVVVVV_Bird
                 {
                     position.Y += 75;
                     speedBoosts--;
+                    //color = new Vector3((float)Column.rnd.NextDouble(), (float)Column.rnd.NextDouble(), (float)Column.rnd.NextDouble());
                 }
                 if ((lastPressedKey == Keys.Up) && (Input.IsKeyPressed(Keys.Space)))
                 {
                     position.Y += -75;
                     speedBoosts--;
+                    //color = new Vector3((float)Column.rnd.NextDouble(), (float)Column.rnd.NextDouble(), (float)Column.rnd.NextDouble());
                 }
             }
 
             if (position.X >= firstColumnStartPosition - 20)
-                playerScore = ((int)position.X / columnSeperation) - (firstColumnStartPosition / columnSeperation - 1);
-            
+                playerScore = ((int)position.X / columnSeperation) - (firstColumnStartPosition / columnSeperation - 1);//calculate player score based on distance travelled
+
+           // if (((int)position.X / columnSeperation) - (firstColumnStartPosition / columnSeperation - 1) == 0)
+           // {
+           //     Game1.audioPlayer.Add("PASTCOLUMN.wav", new Song());
+          //      Game1.audioPlayer.Play("PASTCOLUMN.wav");
+          //  }
+
             MovePlayer(this.velocity, gameTime);
         }
 
@@ -97,7 +116,7 @@ namespace VVVVVV_Bird
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(playerSprite, position, null, Color.White, 0.0f, origin, 1.0f, SpriteEffects.None, 0.0f);
+            spriteBatch.Draw(currentSprite, position, null, new Color(1f, 1f, 1f), 0.0f, origin, 1.0f, SpriteEffects.None, 0.0f);
         }
 
 
@@ -125,7 +144,9 @@ namespace VVVVVV_Bird
             }
         }
 
-        public Vector2 Dimensions { get { return new Vector2(this.playerSprite.Width, this.playerSprite.Height); } }
+        public Vector3 Color { get { return color; } set { color = value; } }
+
+        public Vector2 Dimensions { get { return new Vector2(this.currentSprite.Width, this.currentSprite.Height); } }
 
         public Vector2 Velocity
         {

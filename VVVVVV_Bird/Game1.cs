@@ -24,7 +24,8 @@ namespace VVVVVV_Bird
         private Background background;
         private Player player;
         private Level level;
-        private Texture2D fontTexture, spBoostSprite,wallSprite;
+        public static AudioPlayer audioPlayer;
+        private Texture2D fontTexture, spBoostSprite, wallSprite, columnSprite;
         private SpriteFont font;
         private int columnSeperation, firstColumnStartPosition, worldLowerBound, worldUpperBound;
         private UI playerScore;
@@ -47,7 +48,7 @@ namespace VVVVVV_Bird
 
             cameraOffset = new Vector2(worldBounds.Width / 3, 0);
 
-            GraphicsDeviceManager.IsFullScreen = false;
+            GraphicsDeviceManager.IsFullScreen = true;
 
         }
 
@@ -74,11 +75,17 @@ namespace VVVVVV_Bird
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            background = new Background(Content.Load<Texture2D>("BGTile.png"), new Vector2(worldBounds.Width, worldBounds.Height));
+            audioPlayer = new AudioPlayer();
 
-            Texture2D playerSprite = Content.Load<Texture2D>("PLAYER.png");
+            background = new Background(Content.Load<Texture2D>("BGTile.png"), new Vector2(worldBounds.Width, worldBounds.Height),new Vector2(0,0));
+
+            Texture2D playerNormalSprite = Content.Load<Texture2D>("PLAYER.png");
+            Texture2D playerUpSprite = Content.Load<Texture2D>("PLAYER_UP.png");
+            Texture2D playerDownSprite = Content.Load<Texture2D>("PLAYER_DOWN.png");
+
             spBoostSprite = Content.Load<Texture2D>("SPEEDBOOSTS.png");
-            wallSprite = Content.Load<Texture2D>("WALL.png");
+            wallSprite = Content.Load<Texture2D>("WALL2.png");
+            columnSprite = Content.Load<Texture2D>("LASER.png");
             fontTexture = Content.Load<Texture2D>("Font.png");
             font = Content.Load<SpriteFont>("HellaFont");
 
@@ -88,10 +95,10 @@ namespace VVVVVV_Bird
             columnSeperation = 500;
             firstColumnStartPosition = 1000;
 
-            player = new Player(playerSprite, new Vector2(0, 360), new Vector2(1, 0.4f), new Vector2(10, 10), columnSeperation, 3);
+            player = new Player(playerNormalSprite,playerUpSprite,playerDownSprite, new Vector2(0, 360), new Vector2(1, 0.4f), new Vector2(10, 10), columnSeperation, 3);
 
-            level = new Level(wallSprite);
-            level.GenerateWorldBounds(worldLowerBound, worldUpperBound, 50);//generate the worlds lower and upper walls which the pipes are attached to
+            level = new Level(wallSprite,columnSprite);
+            level.GenerateWorldBounds(worldLowerBound, worldUpperBound, 80);//generate the worlds lower and upper walls which the pipes are attached to
             level.GenerateColumns(columnSeperation, player.Dimensions, 3, firstColumnStartPosition);
 
             playerScore = new UI(font, new Vector2(30, 60), 0, "Score: ", true);
@@ -100,8 +107,8 @@ namespace VVVVVV_Bird
             collisionResolver = new CollisionResolver();
 
             collisionResolver.Add(player);
-
-            foreach (Wall wall in level.Walls) { collisionResolver.Add(wall); }
+            foreach (Wall wall in level.UpperWalls) { collisionResolver.Add(wall); }
+            foreach (Wall wall in level.LowerWalls) { collisionResolver.Add(wall); }
             foreach (Column column in level.Columns) 
             {
                 List<Wall> columnComponents = column.ColumnComponents;
@@ -111,7 +118,8 @@ namespace VVVVVV_Bird
 
         public void RestartGame(int pScore)
         {
-            foreach (Wall wall in level.Walls) { collisionResolver.Remove(wall); }//remove walls and columns from resolver 
+            foreach (Wall wall in level.UpperWalls) { collisionResolver.Remove(wall); }//remove walls and columns from resolver 
+            foreach (Wall wall in level.LowerWalls) { collisionResolver.Remove(wall); }//remove walls and columns from resolver 
             foreach (Column column in level.Columns)
             {
                 List<Wall> columnComponents = column.ColumnComponents;
@@ -119,11 +127,12 @@ namespace VVVVVV_Bird
             } 
 
             level = null;
-            level = new Level(wallSprite);
-            level.GenerateWorldBounds(worldLowerBound, worldUpperBound, 50);//generate the worlds lower and upper walls which the pipes are attached to
+            level = new Level(wallSprite,columnSprite);
+            level.GenerateWorldBounds(worldLowerBound, worldUpperBound, 80);//generate the worlds lower and upper walls which the pipes are attached to
             level.GenerateColumns(columnSeperation, player.Dimensions, 3, firstColumnStartPosition);
 
-            foreach (Wall wall in level.Walls) { collisionResolver.Add(wall); }
+            foreach (Wall wall in level.UpperWalls) { collisionResolver.Add(wall); }
+            foreach (Wall wall in level.LowerWalls) { collisionResolver.Add(wall); }
             foreach (Column column in level.Columns)
             {
                 List<Wall> columnComponents = column.ColumnComponents;
@@ -164,6 +173,7 @@ namespace VVVVVV_Bird
             Input.Update(gameTime);
             Camera2D.UpdatePosition(new Vector2(player.Position.X, 0),cameraOffset);//move camera w/pos of player
             level.MoveWorldBounds(Camera2D.CameraPosition,cameraOffset);
+            background.Position = new Vector2(player.Position.X, 0)-cameraOffset;
 
             playerScore.SetPosition(new Vector2(30,0)+Camera2D.CameraPosition-cameraOffset);//move scores w/camera
             playerHiScore.SetPosition(new Vector2(1000, 0) + Camera2D.CameraPosition - cameraOffset);
@@ -184,10 +194,15 @@ namespace VVVVVV_Bird
                 }
             }
 
-            if ((player.Score % 5 == 0)&&(player.Score != 0))
+            if ((player.Score % 10 == 0)&&(player.Score != 0))//increase maxspeed every 10 columnd
             {
                 player.MaxXSpeed += 0.08f;
-                Console.WriteLine(player.MaxXSpeed);
+                player.SpeedBoosts = 3;
+            }
+
+            if ((player.Score % 2 == 0) && (player.Score != 0))
+            {
+                background.Color = new Vector3((float)Column.rnd.NextDouble(), (float)Column.rnd.NextDouble(), (float)Column.rnd.NextDouble());
             }
 
             collisionResolver.Resolve();
